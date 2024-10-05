@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href='https://unpkg.com/@fullcalendar/core@5.9.0/main.min.css' rel='stylesheet' />
+  <script src='https://unpkg.com/@fullcalendar/core@5.9.0/main.min.js'></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: async function (fetchInfo, successCallback, failureCallback) {
+          const start = fetchInfo.startStr;
+          const end = fetchInfo.endStr;
+          
+          // Fetch moods from backend
+          const response = await fetch(`/api/getMoodForDate?date=${start}`);
+          const data = await response.json();
+          
+          const moodColorMap = {
+            happy: 'yellow',
+            sad: 'blue',
+            neutral: 'gray',
+            angry: 'red'
+          };
+          
+          successCallback([
+            {
+              title: data.majorityMood || 'No Data',
+              start: start,
+              backgroundColor: moodColorMap[data.majorityMood || 'neutral'],
+              display: 'background'
+            }
+          ]);
+        }
+      });
+
+      calendar.render();
+    });
+  </script>
+</head>
+<body>
+  <div id='calendar'></div>
+</body>
+</html>
