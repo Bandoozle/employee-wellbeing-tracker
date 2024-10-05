@@ -27,7 +27,7 @@ export function LoginPage() {
               label="Email"
               id="email"
               type="email"
-              placeholder="m@example.com"
+              placeholder="JohnDoe@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
