@@ -132,22 +132,27 @@ export default function EmployerHomePage() {
       <div className="flex justify-center mt-0">
         {sentimentData && sentimentData.some(data => data.value > 0) ? (
           <PieChart width={600} height={600}>
-            <Tooltip />
-            <Pie
-              data={sentimentData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={170}
-              fill="#8884d8"
-              label
-            >
-              {sentimentData.map((entry) => (
-                <Cell key={entry.name} fill={entry.color} />
-              ))}
-            </Pie>
-          </PieChart>
+          <Tooltip />
+          <Pie
+            data={sentimentData}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={170}
+            fill="#8884d8"
+            label
+          >
+            {sentimentData.map((entry) => (
+              <Cell 
+                key={entry.name} 
+                fill={entry.color} 
+                style={{ outline: 'none' }} // Disable the default outline on hover
+              />
+            ))}
+          </Pie>
+        </PieChart>
+        
         ) : (
           <div>No mood data available for the selected time frame.</div>
         )}
