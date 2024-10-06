@@ -50,12 +50,12 @@ function CalendarView() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 font-sans">
-      <h1 className="text-4xl mb-6 text-center font-edu">October</h1>
+      <h1 className="text-4xl mb-6 text-center font-edu">October 6, 2024</h1>
 
       <nav className="flex justify-center font-edu space-x-6 mb-8">
-        <Link to="/" className="text-orange-500 hover:underline">Home</Link>
-        <Link to="/manage-accounts" className="hover:underline">Manage Accounts</Link>
-        <Link to="/calendar-view" className="hover:underline">Calendar</Link>
+        <Link to="/employer-home-page" className="text-orange-500 hover:underline">home</Link>
+        <Link to="/manage-accounts" className="hover:underline">manage accounts</Link>
+        <Link to="/calendar-view" className="hover:underline">calendar</Link>
       </nav>
 
       {/* Add margin to push the calendar down */}

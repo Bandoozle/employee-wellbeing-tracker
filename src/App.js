@@ -12,6 +12,10 @@ import CalendarView from './components/Calendar';
 import ManageAccounts from './components/ManageAccounts';
 import MoodResult from './components/MoodResult';
 import MoodLog from './components/MoodLog';
+
+import MockAddMoods from './components/mock';
+
+
 function App() {
   return (
     <Router>
@@ -20,6 +24,10 @@ function App() {
         <Routes>
           {/* Route to the login page */}
           <Route path="/" element={<LoginPage />} />
+
+
+          <Route path="/mock" element={<MockAddMoods />} />
+
 
           {/* Route to mood selection page */}
           <Route path="/add-employee" element={<AddEmployee />} /> 
