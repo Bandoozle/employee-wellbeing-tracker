@@ -4,6 +4,7 @@ import MoodSelection from './components/MoodSelection';
 import MoodInput from './components/MoodInput';
 import { AnimatePresence } from 'framer-motion';
 import './App.css';
+import CalendarView from './components/Calendar'; 
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MoodSelection />} />
           <Route path="/input/:mood" element={<MoodInput />} />
+          <Route path="/calendar" element={<CalendarView />} />
         </Routes>
       </AnimatePresence>
     </Router>
