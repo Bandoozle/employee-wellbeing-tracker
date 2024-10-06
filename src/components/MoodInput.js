@@ -15,7 +15,14 @@ export default function MoodInput() {
   const { mood } = useParams();
   const [insight, setInsight] = useState('');
   const [userDetails, setUserDetails] = useState(null); 
+  const [error, setError] = useState(''); 
   const navigate = useNavigate();
+
+  // Get the current date in 'YYYY-MM-DD' format
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];  // Returns YYYY-MM-DD
+  };
 
   // Mapping mood to images
   const moodImages = {
@@ -30,7 +37,8 @@ export default function MoodInput() {
     const fetchUserDetails = async () => {
       const user = auth.currentUser;
       if (user) {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           setUserDetails(userDoc.data());
         } else {
@@ -51,7 +59,19 @@ export default function MoodInput() {
     if (user && userDetails) {
       try {
         // Create a new document in Firestore to store the mood feedback
-        await setDoc(doc(db, 'moods', `${user.uid}_${Date.now()}`), {
+        const today = getCurrentDate();
+        const docId = `${user.uid}_${today}`;
+
+        const existingDoc = await getDoc(doc(db, 'moods', docId));
+
+        if (existingDoc.exists()) {
+          console.log('You have already submitted your mood today. Please try again tomorrow');
+          setError('You have already submitted your mood today. Please try again tomorrow.');
+          navigate('/');
+          return;
+        }
+
+        await setDoc(doc(db, 'moods', docId), {
           mood,
           insight,
           email: userDetails.email,  // Store email from userDetails
@@ -60,14 +80,19 @@ export default function MoodInput() {
           timestamp: new Date(),  // Store timestamp
         });
         console.log('Mood data saved successfully');
+        navigate('/'); // Navigate back after submission
       } catch (error) {
-        console.error('Error saving mood data:', error);
+        if (error.code === 'already-exists') {
+          setError('You have already submitted your mood today. Please try again tomorrow.');
+        } else {
+          console.error('Error saving mood data:', error);
+          setError('There was an issue submitting your mood. Please try again.');
+        }
       }
     } else {
       console.error('User details not available');
+      setError('User details not available. Please try again.');
     }
-
-    navigate('/'); // Navigate back after submission
   };
 
   const handleCancel = () => {
