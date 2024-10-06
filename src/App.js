@@ -7,6 +7,9 @@ import LoginPage from './components/LoginPage';  // Ensure LoginPage is the defa
 import './App.css';  // Custom CSS
 import ProtectedRoute from './components/ProtectedRoute';
 import AddEmployee from './components/AddEmployee';
+import EmployerHomePage from './components/EmployerHomePage';
+import CalendarView from './components/Calendar';
+import ManageAccounts from './components/ManageAccounts';
 
 function App() {
   return (
@@ -18,8 +21,16 @@ function App() {
           <Route path="/" element={<LoginPage />} />
 
           {/* Route to mood selection page */}
-          <Route path="/add-employee" element={<AddEmployee />} />  
-          
+          <Route path="/add-employee" element={<AddEmployee />} /> 
+
+          {/* Route to mood selection page */}
+          <Route path="/manage-accounts" element={<ManageAccounts />} /> 
+
+          <Route path="/employer-home-page" element={<EmployerHomePage />} />   
+
+          {/* Route to mood selection page */}
+          <Route path="/calendar-view" element={<CalendarView />} />  
+
           {/* Route to mood selection page */}
           <Route path="/mood-selection" element={<MoodSelection />} /> 
           

@@ -35,7 +35,7 @@ export function LoginPage() {
 
         if (role === 'employer') {
           // Navigate to employer dashboard
-          navigate('/add-employee');
+          navigate('/employer-home-page');
         } else if (role === 'employee') {
           // Navigate to employee mood selection page
           navigate('/mood-selection');
