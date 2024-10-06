@@ -3,9 +3,7 @@ import { auth, signInWithEmailAndPassword } from '../firebase';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card, CardHeader, CardFooter } from '../components/ui/Card';
-import { HeartPulse } from "lucide-react";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,9 +39,8 @@ export function LoginPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-center mb-4">
-            <HeartPulse className="h-12 w-12 text-blue-500" />
           </div>
-          <h2 className="text-6xl font-bold text-center text-gray-900">Care Connect</h2>
+          <h2 className="text-6xl font-edu text-center text-gray-900">CareConnect</h2>
           {error && <p className="text-red-600 text-center">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
@@ -70,10 +67,10 @@ export function LoginPage() {
           </form>
         </CardHeader>
         <CardFooter>
-          <a href="#" className="text-sm text-blue-600 hover:underline block text-center">
+          <a href="#" className="text-sm font-edu text-[#db6a59] hover:underline block text-center">
             Forgot your password?
           </a>
-          <p className="text-sm text-gray-500 text-center">
+          <p className="text-sm font-edu text-gray-500 text-center">
             New employee? Contact your HR department to get started.
           </p>
         </CardFooter>
