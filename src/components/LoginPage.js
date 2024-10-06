@@ -1,5 +1,7 @@
 import React, { useState } from 'react'; 
-import { auth, signInWithEmailAndPassword } from '../firebase';  
+import { auth, signInWithEmailAndPassword } from '../firebase'; 
+import { db } from '../firebase';  // Firebase Firestore
+import { doc, getDoc } from 'firebase/firestore'; 
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card, CardHeader, CardFooter } from '../components/ui/Card';
@@ -26,12 +28,34 @@ export function LoginPage() {
       console.log('User logged in:', userCredential.user);
       
       // Navigate to the mood selection page after successful login
-      navigate('/mood-selection'); // Redirects the user
+      const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
+      // console.log("User UID:", auth.currentUser?.email);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const role = userData.employeeType; // 'employee' or 'employer'
+
+        if (role === 'employer') {
+          // Navigate to employer dashboard
+          navigate('/add-employee');
+        } else if (role === 'employee') {
+          // Navigate to employee mood selection page
+          navigate('/mood-selection');
+        } else {
+          // Handle cases where the role is undefined
+          console.error('Role is undefined for user:', userCredential.user);
+          setError('Role is not assigned. Please contact admin.');
+        }
+      } else {
+        console.error('No user data found in Firestore for this user.');
+        setError('User data not found. Please contact support.');
+      }
     } catch (error) {
       console.error('Login failed:', error);
       setError('Failed to log in. Please check your email and password.');
     } finally {
       setLoading(false);
+      // console.log("User UID:", auth.currentUser?.uid);
       console.log("Finished login attempt");
     }
   };
