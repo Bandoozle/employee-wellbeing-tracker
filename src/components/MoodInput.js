@@ -1,9 +1,10 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/Button';  // Using the custom Button component
 import { db, auth } from '../firebase';  // Import Firebase Firestore and Auth
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { Modal } from './Modal';  // Import the Modal component
 
 import happyImage from '../components/icons/happy.png';
 import neutralImage from '../components/icons/neutral.png';
@@ -15,8 +16,9 @@ export default function MoodInput() {
   const { mood } = useParams();
   const [insight, setInsight] = useState('');
   const [userDetails, setUserDetails] = useState(null); 
-  const [error, setError] = useState(''); 
-  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);  // Control modal state
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate(); // Use navigate to handle redirection
 
   // Get the current date in 'YYYY-MM-DD' format
   const getCurrentDate = () => {
@@ -55,22 +57,21 @@ export default function MoodInput() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
-
+  
     if (user && userDetails) {
       try {
         // Create a new document in Firestore to store the mood feedback
         const today = getCurrentDate();
         const docId = `${user.uid}_${today}`;
-
+  
         const existingDoc = await getDoc(doc(db, 'moods', docId));
-
+  
         if (existingDoc.exists()) {
-          console.log('You have already submitted your mood today. Please try again tomorrow');
-          setError('You have already submitted your mood today. Please try again tomorrow.');
-          navigate('/');
+          setErrorMessage('You have already submitted your mood today. Please try again tomorrow.');
+          setIsModalOpen(true);  // Show modal when the user has already submitted
           return;
         }
-
+  
         await setDoc(doc(db, 'moods', docId), {
           mood,
           insight,
@@ -80,18 +81,16 @@ export default function MoodInput() {
           timestamp: new Date(),  // Store timestamp
         });
         console.log('Mood data saved successfully');
-        navigate('/'); // Navigate back after submission
+  
+        // Navigate to the mood result page with the mood parameter (e.g., /mood-result/happy)
+        navigate(`/mood-result/${mood.toLowerCase()}`);  // Include the mood in the route
       } catch (error) {
-        if (error.code === 'already-exists') {
-          setError('You have already submitted your mood today. Please try again tomorrow.');
-        } else {
-          console.error('Error saving mood data:', error);
-          setError('There was an issue submitting your mood. Please try again.');
-        }
+        setErrorMessage('There was an issue submitting your mood. Please try again.');
+        setIsModalOpen(true);  // Show error modal
       }
     } else {
-      console.error('User details not available');
-      setError('User details not available. Please try again.');
+      setErrorMessage('User details not available. Please try again.');
+      setIsModalOpen(true);  // Show error modal
     }
   };
 
@@ -99,8 +98,14 @@ export default function MoodInput() {
     navigate('/mood-selection');
   };
 
+  // Update the closeModal function to navigate to login
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate('/');  // Redirect to login when modal closes
+  };
+
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       <motion.div
         className="w-full max-w-3xl"
         initial={{ opacity: 0, y: -50 }}
@@ -121,13 +126,13 @@ export default function MoodInput() {
             <textarea
               value={insight}
               onChange={(e) => setInsight(e.target.value)}
-              className="w-full h-64 bg-gray-200 font-edu text-black rounded-2xl p-6 mb-4 resize-none text-xl"
+              className="w-full h-64 bg-white font-edu text-black rounded-2xl p-6 mb-4 resize-none text-xl"
               placeholder="Share your thoughts..."
             />
             <div className="flex justify-between gap-4 mt-4">
               <Button
                 onClick={handleCancel}
-                className="w-full bg-gray-500 hover:bg-gray-600 text-white" // Updated: Cancel button with gray background and hover effect
+                className="w-full bg-gray-500 hover:bg-gray-600 text-white"
               >
                 Cancel
               </Button>
@@ -138,6 +143,14 @@ export default function MoodInput() {
           </form>
         </div>
       </motion.div>
+
+      {/* Modal for showing error or message */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}  // Close modal and go to login page
+        title="Submission Error"
+        message={errorMessage}
+      />
     </div>
   );
 }

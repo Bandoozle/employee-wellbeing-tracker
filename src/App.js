@@ -10,6 +10,7 @@ import AddEmployee from './components/AddEmployee';
 import EmployerHomePage from './components/EmployerHomePage';
 import CalendarView from './components/Calendar';
 import ManageAccounts from './components/ManageAccounts';
+import MoodResult from './components/MoodResult';
 
 function App() {
   return (
@@ -36,6 +37,9 @@ function App() {
           
           {/* Route for mood input, with the selected mood passed as a parameter */}
           <Route path="/input/:mood" element={<MoodInput />} /> 
+
+          <Route path="/mood-result/:mood" element={<MoodResult />} />
+      
         </Routes>
       </AnimatePresence>
     </Router>
