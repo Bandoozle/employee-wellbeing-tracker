@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/Button';  // Using the custom Button component
+import { db, auth } from '../firebase';  // Import Firebase Firestore and Auth
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 import happyImage from '../components/icons/happy.png';
 import neutralImage from '../components/icons/neutral.png';
@@ -12,6 +14,7 @@ import tiredImage from '../components/icons/tired.png';
 export default function MoodInput() {
   const { mood } = useParams();
   const [insight, setInsight] = useState('');
+  const [userDetails, setUserDetails] = useState(null); 
   const navigate = useNavigate();
 
   // Mapping mood to images
@@ -23,10 +26,48 @@ export default function MoodInput() {
     tired: tiredImage,
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          setUserDetails(userDoc.data());
+        } else {
+          console.error('No user data found');
+        }
+      } else {
+        console.error('No authenticated user');
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Mood:', mood, 'Insight:', insight);
-    navigate('/');
+    const user = auth.currentUser;
+
+    if (user && userDetails) {
+      try {
+        // Create a new document in Firestore to store the mood feedback
+        await setDoc(doc(db, 'moods', `${user.uid}_${Date.now()}`), {
+          mood,
+          insight,
+          email: userDetails.email,  // Store email from userDetails
+          department: userDetails.department,  // Store department
+          employeeId: userDetails.employeeId,  // Store employee ID
+          timestamp: new Date(),  // Store timestamp
+        });
+        console.log('Mood data saved successfully');
+      } catch (error) {
+        console.error('Error saving mood data:', error);
+      }
+    } else {
+      console.error('User details not available');
+    }
+
+    navigate('/'); // Navigate back after submission
   };
 
   const handleCancel = () => {
