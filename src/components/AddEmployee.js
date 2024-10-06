@@ -27,6 +27,9 @@ export default function AddEmployee() {
 
   return (
     <div className="max-w-md mx-auto font-edu bg-white p-6 rounded-lg shadow-md mt-20">
+      <Link to="/manage-accounts" className="absolute top-4 left-4 font-edu text-gray-900 ">
+        Manage Accounts
+      </Link>
        {/* Link to Mood Log */}
        <Link to="/" className="absolute top-4 right-4 font-edu text-gray-900 ">
         Login Page

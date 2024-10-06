@@ -60,6 +60,10 @@ export default function MoodSelection() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
+      <Link to="/" className="absolute top-4 left-4 font-edu text-gray-900 ">
+        Login Page
+      </Link>
+
       {/* Link to Mood Log */}
       <Link to="/mood-log" className="absolute top-4 right-4 font-edu text-gray-900 ">
         View Mood Log

@@ -103,9 +103,9 @@ function CalendarView() {
       <h1 className="text-5xl mb-6 text-center font-edu">Calendar View</h1>
 
       <nav className="flex font-edu justify-center space-x-6 mb-8">
-        <Link to="/employer-home-page" className="text-orange-500 hover:underline text-2xl">home</Link>
+        <Link to="/employer-home-page" className="hover:underline text-2xl">home</Link>
         <Link to="/manage-accounts" className="hover:underline text-2xl">manage accounts</Link>
-        <Link to="/calendar-view" className="hover:underline text-2xl">calendar</Link>
+        <Link to="/calendar-view" className=" text-orange-500 hover:underline text-2xl">calendar</Link>
       </nav>
 
       <div className="mt-12">

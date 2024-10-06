@@ -106,9 +106,9 @@ export default function EmployerHomePage() {
       <h1 className="text-5xl mb-6 text-center font-edu">October 6, 2024</h1>
 
       <nav className="flex font-edu justify-center space-x-6 mb-8">
-        <Link to="/employer-home-page" className="text-orange-500 hover:underline text-2xl">Home</Link>
-        <Link to="/manage-accounts" className="hover:underline text-2xl">Manage Accounts</Link>
-        <Link to="/calendar-view" className="hover:underline text-2xl">Calendar</Link>
+        <Link to="/employer-home-page" className="text-orange-500 hover:underline text-2xl">home</Link>
+        <Link to="/manage-accounts" className="hover:underline text-2xl">manage accounts</Link>
+        <Link to="/calendar-view" className="hover:underline text-2xl">calendar</Link>
       </nav>
 
       <div className="flex justify-center items-center mt-4 mb-4 space-x-4">
