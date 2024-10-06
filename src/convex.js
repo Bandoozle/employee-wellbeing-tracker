@@ -9,6 +9,6 @@ if (!convexAddress) {
 
 // Initialize Convex client with the address
 const convex = new ConvexReactClient(convexAddress);
-Console.log("Connecting to Convex at:", convexAddress);
+console.log("Connecting to Convex at:", convexAddress);
 
 export default convex;

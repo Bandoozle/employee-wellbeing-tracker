@@ -2,18 +2,36 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MoodSelection from './components/MoodSelection';
 import MoodInput from './components/MoodInput';
+<<<<<<< HEAD
 import { AnimatePresence } from 'framer-motion';
 import './App.css';
 import CalendarView from './components/Calendar'; 
+=======
+import { AnimatePresence } from 'framer-motion';  // For animations
+import LoginPage from './components/LoginPage';  // Ensure LoginPage is the default export if not named
+import './App.css';  // Custom CSS
+>>>>>>> refs/remotes/origin/main
 
 function App() {
   return (
     <Router>
+      {/* AnimatePresence allows for animations when components are added or removed */}
       <AnimatePresence mode="wait">
         <Routes>
+<<<<<<< HEAD
           <Route path="/" element={<MoodSelection />} />
           <Route path="/input/:mood" element={<MoodInput />} />
           <Route path="/calendar" element={<CalendarView />} />
+=======
+          {/* Route to the login page */}
+          <Route path="/" element={<LoginPage />} /> 
+          
+          {/* Route to mood selection page */}
+          <Route path="/mood-selection" element={<MoodSelection />} /> 
+          
+          {/* Route for mood input, with the selected mood passed as a parameter */}
+          <Route path="/input/:mood" element={<MoodInput />} /> 
+>>>>>>> refs/remotes/origin/main
         </Routes>
       </AnimatePresence>
     </Router>
