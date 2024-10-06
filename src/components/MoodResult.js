@@ -31,7 +31,7 @@ export default function MoodResult() {
   // After 3 seconds, navigate to the next page (e.g., homepage or another page)
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/');  // Redirect to the homepage or any other route after 3 seconds
+      navigate('/mood-log');
     }, 3000);
 
     return () => clearTimeout(timer);  // Cleanup the timer on component unmount

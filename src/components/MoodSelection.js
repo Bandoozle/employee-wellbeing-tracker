@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 // Import your images
@@ -54,12 +54,17 @@ export default function MoodSelection() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gray-100 flex flex-col items-center justify-center"
+      className="min-h-screen bg-gray-100 flex flex-col items-center justify-center relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
+      {/* Link to Mood Log */}
+      <Link to="/mood-log" className="absolute top-4 right-4 font-edu text-gray-900 ">
+        View Mood Log
+      </Link>
+
       <h1 className={`text-8xl font-edu text-gray-900 ${showEmojis ? 'mb-8' : 'mb-10'}`}>
         How do you feel today?
       </h1>

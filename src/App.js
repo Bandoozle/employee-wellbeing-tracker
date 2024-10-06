@@ -11,7 +11,7 @@ import EmployerHomePage from './components/EmployerHomePage';
 import CalendarView from './components/Calendar';
 import ManageAccounts from './components/ManageAccounts';
 import MoodResult from './components/MoodResult';
-
+import MoodLog from './components/MoodLog';
 function App() {
   return (
     <Router>
@@ -39,6 +39,8 @@ function App() {
           <Route path="/input/:mood" element={<MoodInput />} /> 
 
           <Route path="/mood-result/:mood" element={<MoodResult />} />
+
+          <Route path="/mood-log/" element={<MoodLog />} />
       
         </Routes>
       </AnimatePresence>
