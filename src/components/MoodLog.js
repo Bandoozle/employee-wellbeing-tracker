@@ -5,13 +5,13 @@ import { db, auth } from '../firebase';  // Firebase imports
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { format } from 'date-fns';  // For formatting date
 
-// Define mood colors
+// Define mood colors using hex codes
 const moodColors = {
-  Happy: 'bg-yellow-200',
-  Stressed: 'bg-red-200',
-  Neutral: 'bg-green-200',
-  Sad: 'bg-blue-400',
-  Tired: 'bg-yellow-600',
+  Happy: '#fef08a',     // Hex code for yellow-200
+  Stressed: '#f87171',  // Hex code for red-400
+  Neutral: '#86efac',   // Hex code for green-200
+  Sad: '#60a5fa',       // Hex code for blue-400
+  Tired: '#ca8a04',     // Hex code for yellow-600
 };
 
 // Format the date to display
@@ -98,7 +98,8 @@ export default function MoodLog() {
           {filteredEntries.map((entry, index) => (
             <motion.li
               key={entry.id}  // Use unique id from Firestore
-              className={`bg-white border border-gray-200 font-edu rounded-lg shadow-sm overflow-hidden ${moodColors[entry.mood]}`}
+              style={{ backgroundColor: moodColors[entry.mood] }}  // Inline style using hex codes
+              className="border border-gray-200 font-edu rounded-lg shadow-sm overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
