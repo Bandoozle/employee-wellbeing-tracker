@@ -1,0 +1,6 @@
+@font-face {
+    font-family: 'EduNSWACTFoundation';
+    src: url('/public/fonts/EduNSWACTFoundation-VariableFont_wght.ttf') format('truetype');
+    font-weight: 400; /* Adjust according to your font */
+    font-style: normal;
+  }
