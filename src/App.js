@@ -10,6 +10,9 @@ import AddEmployee from './components/AddEmployee';
 import EmployerHomePage from './components/EmployerHomePage';
 import CalendarView from './components/Calendar';
 import ManageAccounts from './components/ManageAccounts';
+// App.js
+import EmployerReport from './components/EmployerReport';  // Correct import path
+
 
 function App() {
   return (
@@ -26,7 +29,9 @@ function App() {
           {/* Route to mood selection page */}
           <Route path="/manage-accounts" element={<ManageAccounts />} /> 
 
-          <Route path="/employer-home-page" element={<EmployerHomePage />} />   
+          <Route path="/employer-home-page" element={<EmployerHomePage />} />  
+
+          <Route path="/employer-report" element={<EmployerReport />} /> 
 
           {/* Route to mood selection page */}
           <Route path="/calendar-view" element={<CalendarView />} />  

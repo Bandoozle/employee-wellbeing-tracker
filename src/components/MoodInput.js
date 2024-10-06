@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '../components/ui/Button';  // Using the custom Button component
 import { db, auth } from '../firebase';  // Import Firebase Firestore and Auth
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { analyzeInsight } from '../services/FeedbackService';
 
 import happyImage from '../components/icons/happy.png';
 import neutralImage from '../components/icons/neutral.png';
@@ -71,12 +72,16 @@ export default function MoodInput() {
           return;
         }
 
+        const { sentimentScore, problemType } = await analyzeInsight(insight);
+
         await setDoc(doc(db, 'moods', docId), {
           mood,
           insight,
           email: userDetails.email,  // Store email from userDetails
           department: userDetails.department,  // Store department
           employeeId: userDetails.employeeId,  // Store employee ID
+          problemType,
+          sentimentScore,
           timestamp: new Date(),  // Store timestamp
         });
         console.log('Mood data saved successfully');
