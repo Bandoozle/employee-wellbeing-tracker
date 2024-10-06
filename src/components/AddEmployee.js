@@ -26,7 +26,7 @@ export default function AddEmployee() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div className="max-w-md mx-auto font-edu bg-white p-6 rounded-lg shadow-md mt-20">
       <h2 className="text-2xl font-bold mb-6">Add New Employee</h2>
       {success && <p className="text-green-500">Employee added successfully!</p>}
       {error && <p className="text-red-500">{error}</p>}
@@ -105,7 +105,7 @@ export default function AddEmployee() {
           </select>
         </div>
 
-        <button type="submit" className="w-full py-2 bg-blue-600 text-white rounded-lg">Add Employee</button>
+        <button type="submit" className="w-full py-2 bg-[#db6a59] text-white rounded-lg">Add Employee</button>
       </form>
     </div>
   );

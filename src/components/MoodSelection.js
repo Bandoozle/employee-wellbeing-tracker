@@ -42,6 +42,14 @@ export default function MoodSelection() {
         damping: 30,
       },
     }),
+    hover: {
+      y: -10, // Move emoji up slightly on hover
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 15,
+      },
+    },
   };
 
   return (
@@ -58,23 +66,26 @@ export default function MoodSelection() {
 
       {/* Emoji Buttons with Fan-Out Animation */}
       {showEmojis && (
-        <div className="relative flex items-center justify-center mb-16 max-w-screen-md"> {/* max width retained */}
+        <div className="relative flex items-center justify-center mb-16 max-w-screen-md">
           {emojis.map((emoji, i) => (
             <motion.button
               key={emoji.mood}
               onClick={() => handleMoodClick(emoji.mood)}
-              className="flex flex-col items-center p-2 rounded-full mx-0.25" // Further reduced margin-x to 0.25
+              className="flex flex-col items-center p-2 rounded-full mx-0.25"
               custom={i}
               initial="hidden"
               animate="visible"
+              whileHover="hover" // Add hover state using framer-motion's `whileHover`
               variants={emojiVariants}
             >
               <img
                 src={emoji.icon}
                 alt={emoji.mood}
-                className={`h-40 w-40 rounded-full object-contain ${emoji.color}`} 
+                className={`h-40 w-40 rounded-full object-contain ${emoji.color}`}
               />
-              <span className={`mt-1 text-lg font-edu font-semibold ${emoji.color}`}>{emoji.mood}</span>
+              <span className={`mt-1 text-lg font-edu font-semibold ${emoji.color}`}>
+                {emoji.mood}
+              </span>
             </motion.button>
           ))}
         </div>
@@ -82,14 +93,14 @@ export default function MoodSelection() {
 
       {/* Plus/X Button to Show Emojis */}
       <motion.div
-        className={`flex items-center justify-center transition-all duration-300 ${showEmojis ? 'mt-0' : 'mt-6'}`} 
+        className={`flex items-center justify-center transition-all duration-300 ${showEmojis ? 'mt-0' : 'mt-6'}`}
         initial={{ scale: 1 }}
       >
         <button
           onClick={() => setShowEmojis(!showEmojis)}
           className="flex items-center justify-center w-14 h-14 rounded-full bg-[#db6a59] text-white transition-transform duration-300"
           style={{
-            transform: showEmojis ? 'rotate(90deg)' : 'rotate(0deg)', 
+            transform: showEmojis ? 'rotate(90deg)' : 'rotate(0deg)',
           }}
         >
           {showEmojis ? <X className="h-8 w-8" /> : <Plus className="h-8 w-8" />}
