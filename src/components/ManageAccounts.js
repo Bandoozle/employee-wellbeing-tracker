@@ -1,32 +1,79 @@
-// npm install react-router-dom recharts
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-const accountsData = [
-  { id: 1, name: 'John Doe', email: 'john@example.com', department: 'Sales' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com', department: 'Engineering' },
-  { id: 3, name: 'Bob Johnson', email: 'bob@example.com', department: 'Marketing' },
-  { id: 4, name: 'Alice Brown', email: 'alice@example.com', department: 'Customer Support' },
-  { id: 5, name: 'Charlie Davis', email: 'charlie@example.com', department: 'HR' },
-  { id: 6, name: 'Eva Wilson', email: 'eva@example.com', department: 'Sales' },
-  { id: 7, name: 'Frank Miller', email: 'frank@example.com', department: 'Engineering' },
-  { id: 8, name: 'Grace Lee', email: 'grace@example.com', department: 'Marketing' },
-  { id: 9, name: 'Henry Taylor', email: 'henry@example.com', department: 'Customer Support' },
-  { id: 10, name: 'Ivy Chen', email: 'ivy@example.com', department: 'HR' },
-];
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { db } from '../firebase'; // Ensure Firebase is configured
+import { collection, getDocs, deleteDoc, doc, getDoc } from 'firebase/firestore';
 
 export default function ManageAccounts() {
+  const [accountsData, setAccountsData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      const accountsCollection = collection(db, 'users'); // Firebase collection
+      const accountsSnapshot = await getDocs(accountsCollection);
+      const accountsList = accountsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setAccountsData(accountsList);
+    };
+
+    fetchAccounts();
+  }, []);
+
+  // Filter accounts based on the search term
+  const filteredAccounts = accountsData.filter(account =>
+    account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    account.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    account.department.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this account?");
+    if (confirmDelete) {
+      try {
+        const accountDoc = doc(db, 'users', id); // Use 'users' collection
+        const docSnapshot = await getDoc(accountDoc);
+
+        if (docSnapshot.exists()) {
+          await deleteDoc(accountDoc);
+          console.log("Document deleted successfully.");
+
+          // Update state to remove the deleted account
+          setAccountsData(prevAccounts => 
+            prevAccounts.filter(account => account.id !== id)
+          );
+        } else {
+          console.log("No such document exists.");
+        }
+      } catch (error) {
+        console.error("Error deleting account:", error);
+      }
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-6 font-sans">
-      <h1 className="text-4xl mb-6 text-center font-edu">Manage Accounts</h1>
-      
-      <nav className="flex justify-center space-x-6 mb-8">
-        <Link to="/" className="hover:underline">home</Link>
-        <Link to="/manage-accounts" className="text-orange-500 hover:underline">manage accounts</Link>
-        <Link to="/calendar-view" className="hover:underline">calendar</Link>
+      <h1 className="text-5xl mb-6 text-center font-edu">October 6, 2024</h1>
+
+      <nav className="flex font-edu justify-center space-x-6 mb-8">
+        <Link to="/employer-home-page" className="text-orange-500 hover:underline text-2xl">home</Link>
+        <Link to="/manage-accounts" className="hover:underline text-2xl">manage accounts</Link>
+        <Link to="/calendar-view" className="hover:underline text-2xl">calendar</Link>
       </nav>
-      
+
+      {/* Search Bar */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search by name, email, or department..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border border-gray-300 rounded-lg p-2 w-full"
+        />
+      </div>
+
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="overflow-x-auto custom-scrollbar" style={{ maxHeight: '400px' }}>
           <table className="min-w-full divide-y divide-gray-200">
@@ -39,14 +86,19 @@ export default function ManageAccounts() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {accountsData.map((account) => (
+              {filteredAccounts.map((account) => (
                 <tr key={account.id}>
                   <td className="px-6 py-4 whitespace-nowrap">{account.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{account.email}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{account.department}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button className="text-indigo-600 hover:text-indigo-900 mr-2">Edit</button>
-                    <button className="text-red-600 hover:text-red-900">Delete</button>
+                    <button 
+                      className="text-red-600 hover:text-red-900" 
+                      onClick={() => handleDelete(account.id)} // Call handleDelete on button click
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -54,9 +106,17 @@ export default function ManageAccounts() {
           </table>
         </div>
       </div>
-      
+
       <div className="mt-8 flex justify-between items-center">
-        <span className="text-xl font-edu">Back to Overview</span>
+        {/* Add Employee Button */}
+        <button
+          onClick={() => navigate('/add-employee')}
+          className=" text-white  font-edu p-1.5 rounded bg-[#db6a59] hover:bg-[#c66152]"
+        >
+          Add Employee
+        </button>
+
+        {/* Back Button */}
         <Link to="/" className="bg-gray-200 p-2 rounded">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

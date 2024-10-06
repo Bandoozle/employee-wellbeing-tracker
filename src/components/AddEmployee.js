@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createUserWithDetails } from '../firebaseAuth';  // Function to create user and store details in Firestore
-
+import { Link } from 'react-router-dom';
 export default function AddEmployee() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,6 +27,10 @@ export default function AddEmployee() {
 
   return (
     <div className="max-w-md mx-auto font-edu bg-white p-6 rounded-lg shadow-md mt-20">
+       {/* Link to Mood Log */}
+       <Link to="/" className="absolute top-4 right-4 font-edu text-gray-900 ">
+        Login Page
+      </Link>
       <h2 className="text-2xl font-bold mb-6">Add New Employee</h2>
       {success && <p className="text-green-500">Employee added successfully!</p>}
       {error && <p className="text-red-500">{error}</p>}

@@ -10,6 +10,11 @@ import AddEmployee from './components/AddEmployee';
 import EmployerHomePage from './components/EmployerHomePage';
 import CalendarView from './components/Calendar';
 import ManageAccounts from './components/ManageAccounts';
+import MoodResult from './components/MoodResult';
+import MoodLog from './components/MoodLog';
+
+import MockAddMoods from './components/mock';
+
 // App.js
 import EmployerReport from './components/EmployerReport';  // Correct import path
 
@@ -22,6 +27,10 @@ function App() {
         <Routes>
           {/* Route to the login page */}
           <Route path="/" element={<LoginPage />} />
+
+
+          <Route path="/mock" element={<MockAddMoods />} />
+
 
           {/* Route to mood selection page */}
           <Route path="/add-employee" element={<AddEmployee />} /> 
@@ -41,6 +50,11 @@ function App() {
           
           {/* Route for mood input, with the selected mood passed as a parameter */}
           <Route path="/input/:mood" element={<MoodInput />} /> 
+
+          <Route path="/mood-result/:mood" element={<MoodResult />} />
+
+          <Route path="/mood-log/" element={<MoodLog />} />
+      
         </Routes>
       </AnimatePresence>
     </Router>
