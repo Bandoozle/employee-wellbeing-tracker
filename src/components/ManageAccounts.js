@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { db } from '../firebase'; // Ensure Firebase is configured
 import { collection, getDocs, deleteDoc, doc, getDoc } from 'firebase/firestore';
 
 export default function ManageAccounts() {
   const [accountsData, setAccountsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -43,8 +44,6 @@ export default function ManageAccounts() {
           setAccountsData(prevAccounts => 
             prevAccounts.filter(account => account.id !== id)
           );
-
-          console.log("Updated accounts data:", accountsData.filter(account => account.id !== id));
         } else {
           console.log("No such document exists.");
         }
@@ -56,7 +55,7 @@ export default function ManageAccounts() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 font-sans">
-      <h1 className="text-4xl mb-6 text-center font-edu">Home</h1>
+      <h1 className="text-4xl mb-6 text-center font-edu">Manage Accounts</h1>
 
       <nav className="flex justify-center font-edu space-x-6 mb-8">
         <Link to="/" className="text-orange-500 hover:underline">Home</Link>
@@ -109,6 +108,15 @@ export default function ManageAccounts() {
       </div>
 
       <div className="mt-8 flex justify-between items-center">
+        {/* Add Employee Button */}
+        <button
+          onClick={() => navigate('/add-employee')}
+          className=" text-white  font-edu p-1.5 rounded bg-[#db6a59] hover:bg-[#c66152]"
+        >
+          Add Employee
+        </button>
+
+        {/* Back Button */}
         <Link to="/" className="bg-gray-200 p-2 rounded">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
