@@ -87,7 +87,7 @@ export default function MoodSelection() {
       >
         <button
           onClick={() => setShowEmojis(!showEmojis)}
-          className="flex items-center justify-center w-14 h-14 rounded-full bg-[#222222] text-white transition-transform duration-300"
+          className="flex items-center justify-center w-14 h-14 rounded-full bg-[#db6a59] text-white transition-transform duration-300"
           style={{
             transform: showEmojis ? 'rotate(90deg)' : 'rotate(0deg)', 
           }}
