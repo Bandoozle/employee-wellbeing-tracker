@@ -100,6 +100,9 @@ function CalendarView() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 font-sans">
+      <Link to="/" className="absolute top-4 right-4 font-edu text-gray-900 ">
+        Login Page
+      </Link>
       <h1 className="text-5xl mb-6 text-center font-edu">Calendar View</h1>
 
       <nav className="flex font-edu justify-center space-x-6 mb-8">

@@ -4,6 +4,7 @@ import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { db, auth } from '../firebase';  // Firebase imports
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { format } from 'date-fns';  // For formatting date
+import { Link } from 'react-router-dom';
 
 // Define mood colors using hex codes
 const moodColors = {
@@ -67,6 +68,9 @@ export default function MoodLog() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-start p-4 pt-12">
+      <Link to="/" className="absolute top-4 right-4 font-edu text-gray-900 ">
+        Login Page
+        </Link>
       <motion.div
         className="w-full max-w-2xl"
         initial={{ opacity: 0, y: -50 }}
@@ -74,6 +78,7 @@ export default function MoodLog() {
         transition={{ duration: 0.5 }}
       >
         <h1 className="text-5xl font-edu mb-8 text-center">Your Mood Log</h1>
+        
 
         <div className="mb-6">
           <label htmlFor="mood-filter" className="block text-sm font-medium font-edu  text-gray-700 mb-2">
